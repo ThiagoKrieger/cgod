@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>CodeGenerator</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EntityFramework" Version="6.4.4" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="DBD.json" />
+      <EmbeddedResource Include="DBD.json" />
+      <None Remove="GenerationResources\BaseResources.file" />
+      <EmbeddedResource Include="GenerationResources\BaseResources.file" />
+      <None Remove="GenerationResources\BaseResources.Designer.file" />
+      <EmbeddedResource Include="GenerationResources\BaseResources.Designer.file" />
+    </ItemGroup>
+
+</Project>
