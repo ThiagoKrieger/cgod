@@ -29,7 +29,7 @@ public class ConvertSemiOldToNew : ICommand
 
 
 
-        foreach (var tableDefinition in databaseDefinition.TableDefinitions.Where(t => t.ClassName == "Quotation"))
+        foreach (var tableDefinition in databaseDefinition.TableDefinitions)
         {
             await GenerateInterface(tableDefinition, cancellationToken);
             await GenerateModel(tableDefinition, cancellationToken);
@@ -40,19 +40,18 @@ public class ConvertSemiOldToNew : ICommand
 
     private async Task CreateFile(string fileName, string fileContent, CancellationToken cancellationToken)
     {
-        if (!File.Exists(fileName))
-        {
-            var dir = Path.GetDirectoryName(fileName);
+        if (File.Exists(fileName))
+            File.Delete(fileName);
 
-            if (dir is null)
-                throw new InvalidOperationException();
+        var dir = Path.GetDirectoryName(fileName);
 
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-        }
+        if (dir is null)
+            throw new InvalidOperationException();
+
+        if (!Directory.Exists(dir))
+            Directory.CreateDirectory(dir);
 
         await File.WriteAllTextAsync(fileName, fileContent, cancellationToken);
-
     }
 
     private async Task GenerateInterface(TableDefinition tableDefinition, CancellationToken cancellationToken)
@@ -80,6 +79,11 @@ public class ConvertSemiOldToNew : ICommand
         var interfaceName = $"I{tableDefinition.ClassName}";
         var tableName = tableDefinition.DbTable;
 
+        builder.AppendLine($"using CP.Composition.Abstractions;");
+        builder.AppendLine($"using CP.DataModel.Abstractions;");
+        builder.AppendLine($"using CP.DataModel.Abstractions.DatabaseDefinition;");
+        builder.AppendLine($"using CP.Domain.Abstractions.Models;");
+        builder.AppendLine($"");
         builder.AppendLine($"namespace CP.Domain.Abstractions.EntityDefinition;");
         builder.AppendLine($"");
         builder.AppendLine($"[CompositionPart(typeof(IEntityDefinition))]");

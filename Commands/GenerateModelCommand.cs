@@ -28,7 +28,12 @@ public class GenerateModelCommand : ICommand
     {
         try
         {
-            var namespaceString = $"namespace CP.Domain.Models;";
+            var namespaceString = $"using System;\n"
+                                  + $"using System.Collections.Generic;\n"
+                                  + $"using CP.Domain.Abstractions.Enums;\n"
+                                  + $"using CP.Domain.Abstractions.Models;\n"
+                                  + $"\n"
+                                  + $"namespace CP.Domain.Models;\n";
 
             var tableSummary = $"\n/// <summary>" +
                                $"\n/// Table {tableDefinition.DbTable}" +
@@ -99,11 +104,11 @@ public class GenerateModelCommand : ICommand
             var singleNavigation = navigationType switch
             {
                 RelationshipMultiplicity.ZeroOrOne =>
-                    $"\n    public virtual {navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
+                    $"\n    public virtual I{navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.One =>
-                    $"\n    public virtual {navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
+                    $"\n    public virtual I{navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.Many =>
-                    $"\n    public virtual ICollection<I{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }} = new PocoHashSet<I{navigationProperty.RelationshipPropertyType}>();",
+                    $"\n    public virtual ICollection<I{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }} = new HashSet<I{navigationProperty.RelationshipPropertyType}>();",
                 _ => throw new ArgumentOutOfRangeException()
             };
 

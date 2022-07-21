@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +81,7 @@
       <option name="presentableId" value="Default" />
       <updated>1657723481227</updated>
       <workItem from="1657723491343" duration="7144000" />
-      <workItem from="1657736059018" duration="47201000" />
+      <workItem from="1657736059018" duration="48514000" />
     </task>
     <servers />
   </component>
@@ -137,26 +138,26 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs</url>
-          <line>182</line>
+          <line>186</line>
           <properties documentPath="D:\repos\cgod\Commands\ConvertSemiOldToNew.cs" initialLine="179" containingFunctionPresentation="method 'TryCaclulateRelationShip'">
             <startOffsets>
-              <option value="8004" />
+              <option value="8277" />
             </startOffsets>
             <endOffsets>
-              <option value="8056" />
+              <option value="8329" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs</url>
-          <line>162</line>
+          <line>166</line>
           <properties documentPath="D:\repos\cgod\Commands\ConvertSemiOldToNew.cs" initialLine="159" containingFunctionPresentation="">
             <startOffsets>
-              <option value="7120" />
+              <option value="7393" />
             </startOffsets>
             <endOffsets>
-              <option value="7273" />
+              <option value="7546" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="20" />

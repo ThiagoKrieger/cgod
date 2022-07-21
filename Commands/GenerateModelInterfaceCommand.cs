@@ -29,7 +29,12 @@ public class GenerateModelInterfaceCommand : ICommand
     {
         try
         {
-            var namespaceString = $"namespace CP.Domain.Abstractions.Models;";
+            var namespaceString = $"using System;\n"
+                                  + $"using System.Collections.Generic;\n"
+                                  + $"using CP.DataModel.Abstractions;\n"
+                                  + $"using CP.Domain.Abstractions.Enums;\n"
+                                  + $"\n"
+                                  + $"namespace CP.Domain.Abstractions.Models;\n";
 
             var tableSummary = $"\n/// <summary>" +
                                $"\n/// Table {tableDefinition.DbTable}" +
