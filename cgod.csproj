@@ -23,4 +23,103 @@
       <EmbeddedResource Include="GenerationResources\BaseResources.Designer.file" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="CP.ApplicationEnvironment">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.ApplicationEnvironment.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.ApplicationEnvironment.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.ApplicationEnvironment.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Collections">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Collections.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Collections.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Collections.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Commanding">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Commanding.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Commanding.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Commanding.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Commanding.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Commanding.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Composition">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Composition.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Composition.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Composition.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Composition.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Composition.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Controls.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Controls.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Controls.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Controls.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.DataModel">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.DataModel.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.DataModel.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.DataModel.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Domain">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Domain.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Domain.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Domain.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Eventing.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Eventing.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.ExceptionHandling">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.ExceptionHandling.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.ExceptionHandling.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.ExceptionHandling.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.ExceptionHandling.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.ExceptionHandling.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Exceptions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Exceptions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Extensions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Extensions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Extensions.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Extensions.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Icons.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Icons.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Logging">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Logging.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Logging.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Logging.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Navigation.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Navigation.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Navigation.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Navigation.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Settings.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Settings.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Styling.WPF">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Styling.WPF.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Views">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Views.dll</HintPath>
+      </Reference>
+      <Reference Include="CP.Windows.Abstractions">
+        <HintPath>..\cp.office4\Client\CP.Office4.Client\bin\Debug\CP.Windows.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

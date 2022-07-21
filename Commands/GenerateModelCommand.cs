@@ -24,7 +24,7 @@ public class GenerateModelCommand : ICommand
         await File.WriteAllTextAsync(fileName, fileContent, cancellationToken);
     }
 
-    private static string GenerateModel(TableDefinition tableDefinition, bool withNavigations)
+    public static string GenerateModel(TableDefinition tableDefinition, bool withNavigations)
     {
         try
         {

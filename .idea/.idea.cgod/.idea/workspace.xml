@@ -5,35 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4c58943-930d-46df-9d84-37a36573e9bf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Commands/GenerateResourcesForEnumCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Commands/ICommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GenerationResources/BaseResources.Designer.file" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GenerationResources/BaseResources.file" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cgod.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cgod.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/cgod.csproj.nuget.dgspec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/cgod.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/cgod.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApplicationHost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApplicationHost.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cgod.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/cgod.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +23,8 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/283192ee269840988fb674230d59a0bb2da90/5e/7244ff37/DatabaseGeneratedOption.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f237a55ab16d4649b96170604924f6b94bf450/cd/922730cf/RelationshipMultiplicity.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Tooling/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ApplicationHost.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Commands/GenerateModelCommand.cs" root0="FORCE_HIGHLIGHTING" />
@@ -78,7 +58,7 @@
   <component name="RunManager">
     <configuration name="cgod" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Debug/net6.0/cgod.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-er -e:bibikbibibu" />
+      <option name="PROGRAM_PARAMETERS" value="-semi" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bin/Debug/net6.0" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -104,7 +84,7 @@
       <option name="presentableId" value="Default" />
       <updated>1657723481227</updated>
       <workItem from="1657723491343" duration="7144000" />
-      <workItem from="1657736059018" duration="7149000" />
+      <workItem from="1657736059018" duration="43891000" />
     </task>
     <servers />
   </component>

@@ -20,6 +20,7 @@ public class ApplicationHost : IHost
         services.AddTransient(typeof(ICommand), typeof(GenerateModelCommand));
         services.AddTransient(typeof(ICommand), typeof(GenerateModelInterfaceCommand));
         services.AddTransient(typeof(ICommand), typeof(GenerateResourcesForEnumCommand));
+        services.AddTransient(typeof(ICommand), typeof(ConvertSemiOldToNew));
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)

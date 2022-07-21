@@ -19,13 +19,13 @@ public class GenerateModelInterfaceCommand : ICommand
         var tableDefinition = entity.GetTableDefinition();
         var withNavigations = parameters.ContainsKey(WithNavigationParameter);
 
-        var fileContent = GenerateModel(tableDefinition, withNavigations);
+        var fileContent = GenerateInterface(tableDefinition, withNavigations);
         var fileName = $"I{tableDefinition.ClassName}.cs";
 
         await File.WriteAllTextAsync(fileName, fileContent, cancellationToken);
     }
 
-    private static string GenerateModel(TableDefinition tableDefinition, bool withNavigations)
+    public static string GenerateInterface(TableDefinition tableDefinition, bool withNavigations)
     {
         try
         {
