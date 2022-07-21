@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using RelationshipMultiplicity = System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity;
@@ -21,18 +22,18 @@ public class ConvertSemiOldToNew : ICommand
             new StreamReader(resourceStream, Encoding.UTF8);
 
         var definitionString = await reader.ReadToEndAsync();
-        var oldDefinition = JsonConvert.DeserializeObject<DatabaseDefinition>(definitionString);
+        var databaseDefinition = JsonConvert.DeserializeObject<DatabaseDefinition>(definitionString);
 
-        if (oldDefinition?.TableDefinitions == null)
+        if (databaseDefinition?.TableDefinitions == null)
             throw new InvalidOperationException("affe");
 
 
 
-        foreach (var tableDefinition in oldDefinition.TableDefinitions)
+        foreach (var tableDefinition in databaseDefinition.TableDefinitions.Where(t => t.ClassName == "Quotation"))
         {
             await GenerateInterface(tableDefinition, cancellationToken);
             await GenerateModel(tableDefinition, cancellationToken);
-            await GenerateDefinition(tableDefinition, cancellationToken);
+            await GenerateDefinition(databaseDefinition, tableDefinition, cancellationToken);
 
         }
     }
@@ -70,7 +71,7 @@ public class ConvertSemiOldToNew : ICommand
         await CreateFile(fileName, fileContent, cancellationToken);
     }
 
-    private async Task GenerateDefinition(TableDefinition tableDefinition, CancellationToken cancellationToken)
+    private async Task GenerateDefinition(DatabaseDefinition databaseDefinition, TableDefinition tableDefinition, CancellationToken cancellationToken)
     {
         var builder = new StringBuilder();
 
@@ -113,7 +114,7 @@ public class ConvertSemiOldToNew : ICommand
 
         builder.AppendLine($"");
 
-        AddNavigations(builder, tableDefinition);
+        AddNavigations(builder, databaseDefinition, tableDefinition);
 
         builder.AppendLine($"    }}");
         builder.AppendLine($"}}");
@@ -124,7 +125,7 @@ public class ConvertSemiOldToNew : ICommand
         await CreateFile(fileName, fileContent, cancellationToken);
     }
 
-    private static void AddNavigations(StringBuilder builder, TableDefinition tableDefinition)
+    private static void AddNavigations(StringBuilder builder, DatabaseDefinition databaseDefinition, TableDefinition tableDefinition)
     {
         if (tableDefinition.NavigationProperties == null)
             return;
@@ -138,20 +139,27 @@ public class ConvertSemiOldToNew : ICommand
                                            ?? navigationDefinition.RelationshipPropertyType
                                            ?? "INVALID CONFIGURATION";
 
-            var methodName = navigationDefinition.InverseEndKind switch
+            var relationShipMultiplicity = navigationDefinition.RelationshipMultiplicity;
+
+            var inverseMultiplicity = navigationDefinition.InverseEndKind
+                                      ?? TryCaclulateRelationShip(databaseDefinition,
+                                          tableDefinition,
+                                          navigationDefinition);
+
+            var methodName = inverseMultiplicity switch
             {
                 RelationshipMultiplicity.One when
-                    navigationDefinition.RelationshipMultiplicity == RelationshipMultiplicity.One => "RequiredWith",
+                    relationShipMultiplicity == RelationshipMultiplicity.One => "RequiredWith",
                 RelationshipMultiplicity.One when
-                    navigationDefinition.RelationshipMultiplicity == RelationshipMultiplicity.Many => "ParentFor",
+                    relationShipMultiplicity == RelationshipMultiplicity.Many => "ParentFor",
                 RelationshipMultiplicity.One when
-                    navigationDefinition.RelationshipMultiplicity == RelationshipMultiplicity.ZeroOrOne => "OptionalOf",
+                    relationShipMultiplicity == RelationshipMultiplicity.ZeroOrOne => "OptionalOf",
                 RelationshipMultiplicity.ZeroOrOne when
-                    navigationDefinition.RelationshipMultiplicity == RelationshipMultiplicity.One => "OptionalFor",
+                    relationShipMultiplicity == RelationshipMultiplicity.One => "OptionalFor",
                 RelationshipMultiplicity.ZeroOrOne when
-                    navigationDefinition.RelationshipMultiplicity == RelationshipMultiplicity.Many => "OptionalParentFor",
+                    relationShipMultiplicity == RelationshipMultiplicity.Many => "OptionalParentFor",
                 RelationshipMultiplicity.Many when
-                    navigationDefinition.RelationshipMultiplicity == RelationshipMultiplicity.One => "ChildOf",
+                    relationShipMultiplicity == RelationshipMultiplicity.One => "ChildOf",
                 _ => $"Unexpected_"
                      + $"{navigationDefinition.InverseEndKind}_"
                      + $"{navigationDefinition.RelationshipMultiplicity}"
@@ -168,6 +176,43 @@ public class ConvertSemiOldToNew : ICommand
 
             builder.AppendLine($";");
         }
+    }
+
+    private static RelationshipMultiplicity? TryCaclulateRelationShip(DatabaseDefinition databaseDefinition, TableDefinition tableDefinition, NavigationPropertyDefinition navigationDefinition)
+    {
+        if (navigationDefinition.InverseEndKind is not null)
+            return navigationDefinition.InverseEndKind;
+
+        if (navigationDefinition.RelationshipMultiplicity is not null)
+        {
+            var relatedTo = navigationDefinition.RelationshipPropertyType;
+            var targetDefinition =
+                databaseDefinition.TableDefinitions?.FirstOrDefault(definition => definition.ClassName == relatedTo);
+            var targetNavigation = targetDefinition?.NavigationProperties?.FirstOrDefault(navigation =>
+                navigation.RelationshipPropertyType == tableDefinition.ClassName);
+            var targetMultiplicity = targetNavigation?.InverseEndKind;
+
+            if (targetMultiplicity is not null)
+                return targetMultiplicity;
+
+            var targetProperty = targetDefinition?.PropertyDefinitions?.FirstOrDefault(
+                property => property.PropName == navigationDefinition.InverseEndKindPropertyName);
+
+            targetProperty ??= targetDefinition?.PropertyDefinitions?.FirstOrDefault(
+                property => property.PropTypeDefinition?.PropType == tableDefinition.ClassName);
+
+            if (targetProperty is null)
+                return null;
+
+            if ((targetProperty?.PropTypeDefinition?.PropType ?? string.Empty).Contains("ICollection"))
+                return RelationshipMultiplicity.Many;
+            if (targetProperty?.PropTypeDefinition?.IsNullable ?? false)
+                return RelationshipMultiplicity.ZeroOrOne;
+
+            return RelationshipMultiplicity.One;
+        }
+
+        return null;
     }
 
     private static void AddProperties(StringBuilder builder, TableDefinition tableDefinition)
@@ -189,12 +234,13 @@ public class ConvertSemiOldToNew : ICommand
                 builder.Append($".IsRequired(");
 
                 if (propertyDefinition.AllowEmptyString)
-                    builder.Append($"allowEmptyStrings = true");
+                    builder.Append($"allowEmptyStrings: true");
 
                 builder.Append($")");
             }
 
-            if (propertyDefinition.MaxLengthDefinition?.IsMaxLength ?? false)
+            if ((propertyDefinition.MaxLengthDefinition?.IsMaxLength ?? false) &&
+                propertyDefinition.MaxLengthDefinition.ValidationMaxLength is not null)
                 builder.Append($".WithMaxLength({propertyDefinition.MaxLengthDefinition.ValidationMaxLength})");
 
             if (propertyDefinition.PrecisionScaleDefinition is not null)
@@ -209,10 +255,10 @@ public class ConvertSemiOldToNew : ICommand
                         builder.Append($"{propertyDefinition.PrecisionScaleDefinition.MapPrecision}, "
                                        + $"{propertyDefinition.PrecisionScaleDefinition.MapScale})");
                     else
-                        builder.Append($"precision = {propertyDefinition.PrecisionScaleDefinition.MapPrecision})");
+                        builder.Append($"precision: {propertyDefinition.PrecisionScaleDefinition.MapPrecision})");
                 }
                 else if (propertyDefinition.PrecisionScaleDefinition.MapScale is not null)
-                    builder.Append($"scale = {propertyDefinition.PrecisionScaleDefinition.MapScale})");
+                    builder.Append($"scale: {propertyDefinition.PrecisionScaleDefinition.MapScale})");
             }
 
             switch (propertyDefinition.PropTypeDefinition?.PropType)
@@ -229,10 +275,10 @@ public class ConvertSemiOldToNew : ICommand
                             builder.Append($"{propertyDefinition.RangeDefinition.Min}, "
                                            + $"{propertyDefinition.RangeDefinition.Max})");
                         else
-                            builder.Append($"min = {propertyDefinition.RangeDefinition.Min})");
+                            builder.Append($"min: {propertyDefinition.RangeDefinition.Min})");
                     }
                     else
-                        builder.Append($"max = {propertyDefinition.RangeDefinition.Max})");
+                        builder.Append($"max: {propertyDefinition.RangeDefinition.Max})");
 
                     break;
                 }
@@ -248,10 +294,10 @@ public class ConvertSemiOldToNew : ICommand
                             builder.Append($"{propertyDefinition.DecimalRangeDefinition.Minimum}, "
                                            + $"{propertyDefinition.DecimalRangeDefinition.Maximum})");
                         else
-                            builder.Append($"min = {propertyDefinition.DecimalRangeDefinition.Minimum})");
+                            builder.Append($"min: {propertyDefinition.DecimalRangeDefinition.Minimum})");
                     }
                     else
-                        builder.Append($"max = {propertyDefinition.DecimalRangeDefinition.Maximum})");
+                        builder.Append($"max: {propertyDefinition.DecimalRangeDefinition.Maximum})");
 
                     break;
                 }
@@ -270,7 +316,8 @@ public class ConvertSemiOldToNew : ICommand
         if (propertyDefinition.RequiredDefinition?.MapIsRequired ?? false)
             builder.Append($".IsRequired()");
 
-        if (propertyDefinition.MaxLengthDefinition?.IsMaxLength ?? false)
+        if ((propertyDefinition.MaxLengthDefinition?.IsMaxLength ?? false) &&
+            propertyDefinition.MaxLengthDefinition.MapMaxLength is not null)
             builder.Append($".WithMaxLength({propertyDefinition.MaxLengthDefinition.MapMaxLength})");
 
         if (propertyDefinition.PrecisionScaleDefinition is not null)
@@ -285,10 +332,10 @@ public class ConvertSemiOldToNew : ICommand
                     builder.Append($"{propertyDefinition.PrecisionScaleDefinition.MapPrecision}, "
                                    + $"{propertyDefinition.PrecisionScaleDefinition.MapScale})");
                 else
-                    builder.Append($"precision = {propertyDefinition.PrecisionScaleDefinition.MapPrecision})");
+                    builder.Append($"precision: {propertyDefinition.PrecisionScaleDefinition.MapPrecision})");
             }
             else if (propertyDefinition.PrecisionScaleDefinition.MapScale is not null)
-                builder.Append($"scale = {propertyDefinition.PrecisionScaleDefinition.MapScale})");
+                builder.Append($"scale: {propertyDefinition.PrecisionScaleDefinition.MapScale})");
         }
 
         switch (propertyDefinition.PropTypeDefinition?.PropType)
@@ -305,10 +352,10 @@ public class ConvertSemiOldToNew : ICommand
                         builder.Append($"{propertyDefinition.RangeDefinition.Min}, "
                                        + $"{propertyDefinition.RangeDefinition.Max})");
                     else
-                        builder.Append($"min = {propertyDefinition.RangeDefinition.Min})");
+                        builder.Append($"min: {propertyDefinition.RangeDefinition.Min})");
                 }
                 else
-                    builder.Append($"max = {propertyDefinition.RangeDefinition.Max})");
+                    builder.Append($"max: {propertyDefinition.RangeDefinition.Max})");
 
                 break;
             }
@@ -324,10 +371,10 @@ public class ConvertSemiOldToNew : ICommand
                         builder.Append($"{propertyDefinition.DecimalRangeDefinition.Minimum}, "
                                        + $"{propertyDefinition.DecimalRangeDefinition.Maximum})");
                     else
-                        builder.Append($"min = {propertyDefinition.DecimalRangeDefinition.Minimum})");
+                        builder.Append($"min: {propertyDefinition.DecimalRangeDefinition.Minimum})");
                 }
                 else
-                    builder.Append($"max = {propertyDefinition.DecimalRangeDefinition.Maximum})");
+                    builder.Append($"max: {propertyDefinition.DecimalRangeDefinition.Maximum})");
 
                 break;
             }

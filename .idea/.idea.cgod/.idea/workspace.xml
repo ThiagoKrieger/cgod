@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4c58943-930d-46df-9d84-37a36573e9bf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApplicationHost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApplicationHost.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cgod.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/cgod.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1657723481227</updated>
       <workItem from="1657723491343" duration="7144000" />
-      <workItem from="1657736059018" duration="43891000" />
+      <workItem from="1657736059018" duration="47201000" />
     </task>
     <servers />
   </component>
@@ -139,8 +135,40 @@
           </properties>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs</url>
+          <line>182</line>
+          <properties documentPath="D:\repos\cgod\Commands\ConvertSemiOldToNew.cs" initialLine="179" containingFunctionPresentation="method 'TryCaclulateRelationShip'">
+            <startOffsets>
+              <option value="8004" />
+            </startOffsets>
+            <endOffsets>
+              <option value="8056" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs</url>
+          <line>162</line>
+          <properties documentPath="D:\repos\cgod\Commands\ConvertSemiOldToNew.cs" initialLine="159" containingFunctionPresentation="">
+            <startOffsets>
+              <option value="7120" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7273" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="Type#CodeGenerator.NavigationPropertyDefinition" memberName="RelationshipPropertyType" />
+        <PinnedItemInfo parentTag="Type#CodeGenerator.NavigationPropertyDefinition" memberName="RelationshipPropertyName" />
+      </pinned-members>
+    </pin-to-top-manager>
     <watches-manager>
       <configuration name="DotNetProject">
         <watch expression="Assembly.GetExecutingAssembly().GetManifestResourceNames()" language="C#" />

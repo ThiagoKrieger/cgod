@@ -103,7 +103,7 @@ public class GenerateModelCommand : ICommand
                 RelationshipMultiplicity.One =>
                     $"\n    public virtual {navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.Many =>
-                    $"\n    public virtual ICollection<{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }} = new PocoHashSet<{navigationProperty.RelationshipPropertyType}>();",
+                    $"\n    public virtual ICollection<I{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }} = new PocoHashSet<I{navigationProperty.RelationshipPropertyType}>();",
                 _ => throw new ArgumentOutOfRangeException()
             };
 
