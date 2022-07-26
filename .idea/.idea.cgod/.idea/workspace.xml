@@ -9,6 +9,8 @@
       <change beforePath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DBD.json" beforeDir="false" afterPath="$PROJECT_DIR$/DBD.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +21,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/283192ee269840988fb674230d59a0bb2da90/5e/7244ff37/DatabaseGeneratedOption.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f237a55ab16d4649b96170604924f6b94bf450/cd/922730cf/RelationshipMultiplicity.cs" root0="SKIP_HIGHLIGHTING" />
@@ -81,7 +86,8 @@
       <option name="presentableId" value="Default" />
       <updated>1657723481227</updated>
       <workItem from="1657723491343" duration="7144000" />
-      <workItem from="1657736059018" duration="48514000" />
+      <workItem from="1657736059018" duration="50300000" />
+      <workItem from="1658489908023" duration="9036000" />
     </task>
     <servers />
   </component>
@@ -136,38 +142,13 @@
           </properties>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs</url>
-          <line>186</line>
-          <properties documentPath="D:\repos\cgod\Commands\ConvertSemiOldToNew.cs" initialLine="179" containingFunctionPresentation="method 'TryCaclulateRelationShip'">
-            <startOffsets>
-              <option value="8277" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8329" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs</url>
-          <line>166</line>
-          <properties documentPath="D:\repos\cgod\Commands\ConvertSemiOldToNew.cs" initialLine="159" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="7393" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7546" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Type#CodeGenerator.NavigationPropertyDefinition" memberName="RelationshipPropertyType" />
         <PinnedItemInfo parentTag="Type#CodeGenerator.NavigationPropertyDefinition" memberName="RelationshipPropertyName" />
+        <PinnedItemInfo parentTag="Type#CodeGenerator.PropertyTypeDefinition" memberName="PropType" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>

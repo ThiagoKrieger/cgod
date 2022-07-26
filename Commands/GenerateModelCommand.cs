@@ -63,6 +63,16 @@ public class GenerateModelCommand : ICommand
                         ? $"\n    public {propType}? {prop.PropName} {{ get; set; }}"
                         : $"\n    public {propType} {prop.PropName} {{ get; set; }}";
 
+                if (prop.PropTypeDefinition is not null &&
+                    !prop.PropTypeDefinition.IsNullable &&
+                    propType == "string")
+                    singleProp += " = string.Empty;";
+
+                if (prop.PropTypeDefinition is not null &&
+                    !prop.PropTypeDefinition.IsNullable &&
+                    propType == "Byte[]")
+                    singleProp += " = Array.Empty<byte>();";
+
                 var summary = $"\n    /// <summary>" +
                               $"\n    /// Column {prop.DbColumn}" +
                               $"\n    /// </summary>";
@@ -104,11 +114,11 @@ public class GenerateModelCommand : ICommand
             var singleNavigation = navigationType switch
             {
                 RelationshipMultiplicity.ZeroOrOne =>
-                    $"\n    public virtual I{navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
+                    $"\n    public I{navigationProperty.RelationshipPropertyType}? {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.One =>
-                    $"\n    public virtual I{navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
+                    $"\n    public I{navigationProperty.RelationshipPropertyType}? {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.Many =>
-                    $"\n    public virtual ICollection<I{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }} = new HashSet<I{navigationProperty.RelationshipPropertyType}>();",
+                    $"\n    public ICollection<I{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }} = new HashSet<I{navigationProperty.RelationshipPropertyType}>();",
                 _ => throw new ArgumentOutOfRangeException()
             };
 

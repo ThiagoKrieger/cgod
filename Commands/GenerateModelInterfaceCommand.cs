@@ -105,9 +105,9 @@ public class GenerateModelInterfaceCommand : ICommand
             var singleNavigation = navigationType switch
             {
                 RelationshipMultiplicity.ZeroOrOne =>
-                    $"\n    public I{navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
+                    $"\n    public I{navigationProperty.RelationshipPropertyType}? {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.One =>
-                    $"\n    public I{navigationProperty.RelationshipPropertyType} {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
+                    $"\n    public I{navigationProperty.RelationshipPropertyType}? {navigationProperty.RelationshipPropertyName} {{ get ; set; }}",
                 RelationshipMultiplicity.Many =>
                     $"\n    public ICollection<I{navigationProperty.RelationshipPropertyType}> {navigationProperty.RelationshipPropertyName} {{ get; set; }}",
                 _ => throw new ArgumentOutOfRangeException(nameof(navigationType), navigationType, "Invalid Navigation Type")

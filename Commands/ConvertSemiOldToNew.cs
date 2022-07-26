@@ -1,5 +1,4 @@
-﻿using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using RelationshipMultiplicity = System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity;
@@ -26,8 +25,6 @@ public class ConvertSemiOldToNew : ICommand
 
         if (databaseDefinition?.TableDefinitions == null)
             throw new InvalidOperationException("affe");
-
-
 
         foreach (var tableDefinition in databaseDefinition.TableDefinitions)
         {
@@ -70,12 +67,20 @@ public class ConvertSemiOldToNew : ICommand
         await CreateFile(fileName, fileContent, cancellationToken);
     }
 
+    public static string? FirstCharToLowerCase(string? str)
+    {
+        if ( !string.IsNullOrEmpty(str) && char.IsUpper(str[0]))
+            return str.Length == 1 ? char.ToLower(str[0]).ToString() : char.ToLower(str[0]) + str[1..];
+
+        return str;
+    }
+
     private async Task GenerateDefinition(DatabaseDefinition databaseDefinition, TableDefinition tableDefinition, CancellationToken cancellationToken)
     {
         var builder = new StringBuilder();
 
         var className = tableDefinition.ClassName ?? throw new ArgumentNullException(nameof(tableDefinition.ClassName));
-        var lowerCaseClassName = className.ToLowerInvariant();
+        var lowerCaseClassName = FirstCharToLowerCase(className);
         var interfaceName = $"I{tableDefinition.ClassName}";
         var tableName = tableDefinition.DbTable;
 
@@ -135,48 +140,64 @@ public class ConvertSemiOldToNew : ICommand
             return;
 
         var className = tableDefinition.ClassName ?? throw new ArgumentNullException(nameof(tableDefinition.ClassName));
-        var lowerCaseClassName = className.ToLowerInvariant();
+        var lowerCaseClassName = FirstCharToLowerCase(className);
 
-        foreach (var navigationDefinition in tableDefinition.NavigationProperties)
+        foreach (var sourceNavigation in tableDefinition.NavigationProperties)
         {
-            var relationshipPropertyname = navigationDefinition.RelationshipPropertyName
-                                           ?? navigationDefinition.RelationshipPropertyType
-                                           ?? "INVALID CONFIGURATION";
+            var targetTableDefinition = databaseDefinition.TableDefinitions?
+                .FirstOrDefault(definition => definition.ClassName == sourceNavigation.RelationshipPropertyType);
 
-            var relationShipMultiplicity = navigationDefinition.RelationshipMultiplicity;
+            var targetNavigation = targetTableDefinition?.NavigationProperties?
+                .FirstOrDefault(definition => definition.RelationshipPropertyType == tableDefinition.ClassName
+                                              && definition.RelationshipPropertyName
+                                              == sourceNavigation.InverseEndKindPropertyName);
 
-            var inverseMultiplicity = navigationDefinition.InverseEndKind
-                                      ?? TryCaclulateRelationShip(databaseDefinition,
-                                          tableDefinition,
-                                          navigationDefinition);
+            if (targetTableDefinition is null || targetNavigation is null)
+                continue;
 
-            var methodName = inverseMultiplicity switch
+            var sourceMultiplicity = sourceNavigation.RelationshipMultiplicity;
+            var targetMultiplicity = targetNavigation.RelationshipMultiplicity;
+
+            var sourceForeignKeys = sourceNavigation.ForeignKeyNames;
+            var targetForiengKeys = targetNavigation.ForeignKeyNames;
+
+            var sourceNavigationProperty = sourceNavigation.RelationshipPropertyName;
+
+            var relationshipMethod = targetMultiplicity switch
             {
                 RelationshipMultiplicity.One when
-                    relationShipMultiplicity == RelationshipMultiplicity.One => "RequiredWith",
+                    sourceMultiplicity == RelationshipMultiplicity.One => "RequiredWith",
                 RelationshipMultiplicity.One when
-                    relationShipMultiplicity == RelationshipMultiplicity.Many => "ParentFor",
+                    sourceMultiplicity == RelationshipMultiplicity.Many => "ParentFor",
                 RelationshipMultiplicity.One when
-                    relationShipMultiplicity == RelationshipMultiplicity.ZeroOrOne => "OptionalOf",
+                    sourceMultiplicity == RelationshipMultiplicity.ZeroOrOne => "OptionalOf",
                 RelationshipMultiplicity.ZeroOrOne when
-                    relationShipMultiplicity == RelationshipMultiplicity.One => "OptionalFor",
+                    sourceMultiplicity == RelationshipMultiplicity.One => "OptionalFor",
                 RelationshipMultiplicity.ZeroOrOne when
-                    relationShipMultiplicity == RelationshipMultiplicity.Many => "OptionalParentFor",
+                    sourceMultiplicity == RelationshipMultiplicity.Many => "OptionalParentFor",
                 RelationshipMultiplicity.Many when
-                    relationShipMultiplicity == RelationshipMultiplicity.One => "ChildOf",
-                _ => $"Unexpected_"
-                     + $"{navigationDefinition.InverseEndKind}_"
-                     + $"{navigationDefinition.RelationshipMultiplicity}"
+                    sourceMultiplicity == RelationshipMultiplicity.One => "ChildOf",
+                _ => $"//{sourceMultiplicity}_{targetMultiplicity}"
             };
 
-            builder.Append($"        {methodName}({lowerCaseClassName} => "
-                           + $"{lowerCaseClassName}.{relationshipPropertyname})");
+            builder.Append($"        {relationshipMethod}({lowerCaseClassName} => "
+                           + $"{lowerCaseClassName}.{sourceNavigationProperty})");
 
-            if (navigationDefinition.ForeignKeyNames != null)
-                foreach (var foreignKeyName in navigationDefinition.ForeignKeyNames)
+            if (sourceForeignKeys is not null && targetForiengKeys is not null &&
+                sourceForeignKeys.Count == targetForiengKeys.Count)
+            {
+                var targetTableName = FirstCharToLowerCase(targetTableDefinition.ClassName);
+
+                for (var i = 0; i < sourceForeignKeys.Count; i++)
                 {
-                    builder.Append($".Map({lowerCaseClassName} => {lowerCaseClassName}.{foreignKeyName})");
+                    var sourceKey = sourceForeignKeys[i];
+                    var targetKey = targetForiengKeys[i];
+
+                    builder.Append($".Map("
+                                   + $"{lowerCaseClassName} => {lowerCaseClassName}!.{sourceKey}, "
+                                   + $"{targetTableName} => {targetTableName}!.{targetKey})");
                 }
+            }
 
             builder.AppendLine($";");
         }
@@ -225,7 +246,7 @@ public class ConvertSemiOldToNew : ICommand
             return;
 
         var className = tableDefinition.ClassName ?? throw new ArgumentNullException(nameof(tableDefinition.ClassName));
-        var lowerCaseClassName = className.ToLowerInvariant();
+        var lowerCaseClassName = FirstCharToLowerCase(className);
 
         foreach (var propertyDefinition in tableDefinition.PropertyDefinitions)
         {
@@ -235,7 +256,8 @@ public class ConvertSemiOldToNew : ICommand
 
             if (propertyDefinition.RequiredDefinition?.IsRequiredValidation ?? false)
             {
-                builder.Append($".IsRequired(");
+                builder.AppendLine();
+                builder.Append($"                .IsRequired(");
 
                 if (propertyDefinition.AllowEmptyString)
                     builder.Append($"allowEmptyStrings: true");
@@ -245,13 +267,19 @@ public class ConvertSemiOldToNew : ICommand
 
             if ((propertyDefinition.MaxLengthDefinition?.IsMaxLength ?? false) &&
                 propertyDefinition.MaxLengthDefinition.ValidationMaxLength is not null)
-                builder.Append($".WithMaxLength({propertyDefinition.MaxLengthDefinition.ValidationMaxLength})");
+            {
+                builder.AppendLine();
+                builder.Append($"                .WithMaxLength({propertyDefinition.MaxLengthDefinition.ValidationMaxLength})");
+            }
 
             if (propertyDefinition.PrecisionScaleDefinition is not null)
             {
                 if (propertyDefinition.PrecisionScaleDefinition.MapPrecision is not null ||
                     propertyDefinition.PrecisionScaleDefinition.MapScale is not null)
-                    builder.Append($".WithPrecision(");
+                {
+                    builder.AppendLine();
+                    builder.Append($"                .WithPrecision(");
+                }
 
                 if (propertyDefinition.PrecisionScaleDefinition.MapPrecision is not null)
                 {
@@ -271,7 +299,10 @@ public class ConvertSemiOldToNew : ICommand
                 {
                     if (propertyDefinition.RangeDefinition.Min is not null ||
                         propertyDefinition.RangeDefinition.Max is not null)
-                        builder.Append($".WithIntRange(");
+                    {
+                        builder.AppendLine();
+                        builder.Append($"                .WithIntRange(");
+                    }
 
                     if (propertyDefinition.RangeDefinition.Min is not null)
                     {
@@ -281,7 +312,7 @@ public class ConvertSemiOldToNew : ICommand
                         else
                             builder.Append($"min: {propertyDefinition.RangeDefinition.Min})");
                     }
-                    else
+                    else if (propertyDefinition.RangeDefinition.Max is not null)
                         builder.Append($"max: {propertyDefinition.RangeDefinition.Max})");
 
                     break;
@@ -290,7 +321,10 @@ public class ConvertSemiOldToNew : ICommand
                 {
                     if (propertyDefinition.DecimalRangeDefinition.Minimum is not null ||
                         propertyDefinition.DecimalRangeDefinition.Maximum is not null)
-                        builder.Append($".WithDecimalRange(");
+                    {
+                        builder.AppendLine();
+                        builder.Append($"                .WithDecimalRange(");
+                    }
 
                     if (propertyDefinition.DecimalRangeDefinition.Minimum is not null)
                     {
@@ -300,7 +334,7 @@ public class ConvertSemiOldToNew : ICommand
                         else
                             builder.Append($"min: {propertyDefinition.DecimalRangeDefinition.Minimum})");
                     }
-                    else
+                    else if (propertyDefinition.DecimalRangeDefinition.Maximum is not null)
                         builder.Append($"max: {propertyDefinition.DecimalRangeDefinition.Maximum})");
 
                     break;
@@ -315,20 +349,30 @@ public class ConvertSemiOldToNew : ICommand
 
     private static void AddColumnDefinition(StringBuilder builder, PropertyDefinition propertyDefinition)
     {
-        builder.Append($".Column(\"{propertyDefinition.DbColumn}\")");
+        builder.AppendLine();
+        builder.Append($"                .Column(\"{propertyDefinition.DbColumn}\")");
 
         if (propertyDefinition.RequiredDefinition?.MapIsRequired ?? false)
-            builder.Append($".IsRequired()");
+        {
+            builder.AppendLine();
+            builder.Append($"                .IsRequired()");
+        }
 
         if ((propertyDefinition.MaxLengthDefinition?.IsMaxLength ?? false) &&
             propertyDefinition.MaxLengthDefinition.MapMaxLength is not null)
-            builder.Append($".WithMaxLength({propertyDefinition.MaxLengthDefinition.MapMaxLength})");
+        {
+            builder.AppendLine();
+            builder.Append($"                .WithMaxLength({propertyDefinition.MaxLengthDefinition.MapMaxLength})");
+        }
 
         if (propertyDefinition.PrecisionScaleDefinition is not null)
         {
             if (propertyDefinition.PrecisionScaleDefinition.MapPrecision is not null ||
                 propertyDefinition.PrecisionScaleDefinition.MapScale is not null)
-                builder.Append($".WithPrecision(");
+            {
+                builder.AppendLine();
+                builder.Append($"                .WithPrecision(");
+            }
 
             if (propertyDefinition.PrecisionScaleDefinition.MapPrecision is not null)
             {
@@ -348,7 +392,10 @@ public class ConvertSemiOldToNew : ICommand
             {
                 if (propertyDefinition.RangeDefinition.Min is not null ||
                     propertyDefinition.RangeDefinition.Max is not null)
-                    builder.Append($".WithIntRange(");
+                {
+                    builder.AppendLine();
+                    builder.Append($"                .WithIntRange(");
+                }
 
                 if (propertyDefinition.RangeDefinition.Min is not null)
                 {
@@ -358,7 +405,7 @@ public class ConvertSemiOldToNew : ICommand
                     else
                         builder.Append($"min: {propertyDefinition.RangeDefinition.Min})");
                 }
-                else
+                else if (propertyDefinition.RangeDefinition.Max is not null)
                     builder.Append($"max: {propertyDefinition.RangeDefinition.Max})");
 
                 break;
@@ -367,7 +414,10 @@ public class ConvertSemiOldToNew : ICommand
             {
                 if (propertyDefinition.DecimalRangeDefinition.Minimum is not null ||
                     propertyDefinition.DecimalRangeDefinition.Maximum is not null)
-                    builder.Append($".WithDecimalRange(");
+                {
+                    builder.AppendLine();
+                    builder.Append($"                .WithDecimalRange(");
+                }
 
                 if (propertyDefinition.DecimalRangeDefinition.Minimum is not null)
                 {
@@ -377,7 +427,7 @@ public class ConvertSemiOldToNew : ICommand
                     else
                         builder.Append($"min: {propertyDefinition.DecimalRangeDefinition.Minimum})");
                 }
-                else
+                else if (propertyDefinition.DecimalRangeDefinition.Maximum is not null)
                     builder.Append($"max: {propertyDefinition.DecimalRangeDefinition.Maximum})");
 
                 break;

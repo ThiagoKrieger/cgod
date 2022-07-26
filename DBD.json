@@ -3075,7 +3075,7 @@
 					"InverseEndKind": 1,
 					"InverseEndKindType": "Stock",
 					"ForeignKeyNames": [
-						"SourceStockNo"
+						"StockNo"
 					]
 				},
 				{
@@ -3086,7 +3086,7 @@
 					"InverseEndKind": 1,
 					"InverseEndKindType": "Stock",
 					"ForeignKeyNames": [
-						"DestinationStockNo"
+						"StockNo"
 					]
 				},
 				{
@@ -31449,7 +31449,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "int"
 					},
 					"PropName": "CommercialContactId",
 					"DbColumn": "sabkfmaw",
@@ -100636,7 +100636,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "bool"
 					},
 					"PropName": "ItemNoCreationOption",
 					"DbColumn": "pos_standard",
@@ -100698,7 +100698,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "int"
 					},
 					"PropName": "CommercialContactId",
 					"DbColumn": "sabkfmaw",
@@ -109063,7 +109063,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "int"
 					},
 					"PropName": "ktr",
 					"DbColumn": "ktr",
@@ -109091,7 +109091,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "int"
 					},
 					"PropName": "oaanr",
 					"DbColumn": "oaanr",
@@ -160812,7 +160812,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "decimal"
 					},
 					"PropName": "PartialOverheadCostFactorSepcialProjectFinalCosting",
 					"DbColumn": "proz_bva",
@@ -160846,7 +160846,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "decimal"
 					},
 					"PropName": "PartialOverheadCostFactorInProcessWork",
 					"DbColumn": "proz_bew",
@@ -164136,7 +164136,7 @@
 					"DatabaseGeneratedOption": null,
 					"PropTypeDefinition": {
 						"IsNullable": true,
-						"PropType": "Nullable`1"
+						"PropType": "DateTime"
 					},
 					"PropName": "Date",
 					"DbColumn": "datum",
