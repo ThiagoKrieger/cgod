@@ -119,6 +119,38 @@ public class ConvertSemiOldToNew : ICommand
         builder.AppendLine($")\r\n                .WithName(\"PK_{tableName}\");");
         builder.AppendLine($"");
 
+        var uniqueKeyList = tableDefinition.Uniques?.ToList();
+
+        if (uniqueKeyList is not null)
+        {
+            foreach (var uniqueInfo in uniqueKeyList)
+            {
+                if (uniqueInfo.ColumnNames is null)
+                    continue;
+
+                builder.Append($"        HasUniqueKey(");
+
+                var properties = uniqueInfo.ColumnNames.Select(columnName =>
+                    tableDefinition.PropertyDefinitions
+                        .FirstOrDefault(property => property.DbColumn == columnName)?.PropName ?? columnName).ToList();
+
+                for (var i = 0; i < properties.Count; i++)
+                {
+                    var propertyName = properties[i];
+
+                    if (i > 0)
+                        builder.Append($", \r\n                        ");
+
+                    builder.Append($"{lowerCaseClassName} => {lowerCaseClassName}.{propertyName}");
+                }
+
+                builder.AppendLine($")\r\n                .WithName(\"{uniqueInfo.Name}\");");
+            }
+
+            if (uniqueKeyList.Count > 0)
+                builder.AppendLine($"");
+        }
+
         AddProperties(builder, tableDefinition);
 
         builder.AppendLine($"");
