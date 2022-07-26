@@ -111,12 +111,12 @@ public class ConvertSemiOldToNew : ICommand
             var propertyName = keyList[i].PropName;
 
             if (i > 0)
-                builder.Append($", ");
+                builder.Append($", \r\n                        ");
 
             builder.Append($"{lowerCaseClassName} => {lowerCaseClassName}.{propertyName}");
         }
 
-        builder.AppendLine($").WithName(\"PK_{tableName}\");");
+        builder.AppendLine($")\r\n                .WithName(\"PK_{tableName}\");");
         builder.AppendLine($"");
 
         AddProperties(builder, tableDefinition);
@@ -153,7 +153,11 @@ public class ConvertSemiOldToNew : ICommand
                                               == sourceNavigation.InverseEndKindPropertyName);
 
             if (targetTableDefinition is null || targetNavigation is null)
+            {
+                builder.AppendLine($"//TODO:({sourceNavigation.RelationshipPropertyName})<->({targetTableDefinition?.ClassName ?? sourceNavigation.InverseEndKindPropertyName}.{targetNavigation?.RelationshipPropertyName ?? "LOST"})");
+
                 continue;
+            }
 
             var sourceMultiplicity = sourceNavigation.RelationshipMultiplicity;
             var targetMultiplicity = targetNavigation.RelationshipMultiplicity;
@@ -177,7 +181,7 @@ public class ConvertSemiOldToNew : ICommand
                     sourceMultiplicity == RelationshipMultiplicity.Many => "OptionalParentFor",
                 RelationshipMultiplicity.Many when
                     sourceMultiplicity == RelationshipMultiplicity.One => "ChildOf",
-                _ => $"//{sourceMultiplicity}_{targetMultiplicity}"
+                _ => $"//TODO:{sourceMultiplicity}_{targetMultiplicity}"
             };
 
             builder.Append($"        {relationshipMethod}({lowerCaseClassName} => "

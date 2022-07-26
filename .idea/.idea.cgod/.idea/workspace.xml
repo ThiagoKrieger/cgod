@@ -7,10 +7,6 @@
     <list default="true" id="b4c58943-930d-46df-9d84-37a36573e9bf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.cgod/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/ConvertSemiOldToNew.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Commands/GenerateModelInterfaceCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBD.json" beforeDir="false" afterPath="$PROJECT_DIR$/DBD.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/cgod.csproj.AssemblyReference.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,15 +44,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="cgod" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Debug/net6.0/cgod.exe" />
@@ -87,7 +84,7 @@
       <updated>1657723481227</updated>
       <workItem from="1657723491343" duration="7144000" />
       <workItem from="1657736059018" duration="50300000" />
-      <workItem from="1658489908023" duration="9036000" />
+      <workItem from="1658489908023" duration="10076000" />
     </task>
     <servers />
   </component>
